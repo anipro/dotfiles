@@ -12,8 +12,13 @@ tmux new-session -d -n $window -s $session
 
 ### 各ホストにsshログイン
 # 最初の1台はsshするだけ
-tmux send-keys "cd /Users/yukimatsuyama/workspace/residential_map/residential_map_batch  && make cloud-sql-psql" C-m
+tmux send-keys "cd /Users/yukimatsuyama/workspace/residential_map  && docker-compose up db" C-m
 shift
+# tmux send-keys "cd /Users/yukimatsuyama/workspace/residential_map/residential_map_batch  && make cloud-sql-psql" C-m
+# shift
+tmux split-window
+tmux select-layout tiled
+tmux send-keys "cd /Users/yukimatsuyama/workspace/residential_map && docker-compose up swagger_ui" C-m
 
 tmux split-window
 tmux select-layout tiled

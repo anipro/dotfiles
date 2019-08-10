@@ -8,8 +8,11 @@ source ~/.oh-my-zsh/themes/blinks.zsh-theme
 alias vi=/usr/local/bin/vim
 alias php-cs="php-cs-fixer fix --config=${HOME}/dotfiles/php_cs --allow-risky=yes"
 alias kindle="open ~/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/My Kindle Content"
+alias swiftlsp="sourcekit-lsp"
 alias connect="ssh -i ~/.ssh/gcp_working -N yuki.matsuyama0123@35.200.60.220 -L 61111:35.200.60.220:22  -N -v"
-plugins=(git)
+# notify clone git clone git@github.com:marzocchi/zsh-notify.git ~/.oh-my-zsh/custom/plugins/notify
+export SYS_NOTIFIER=`which terminal-notifier`
+plugins=(git notify)
 
 fmakel(){
     # TODO ここで何も洗濯しない場合に一番初めのコマンドが渡される問題を修正
@@ -21,13 +24,13 @@ fmakel(){
     fi
 }
 
-fhistory() {
-  command=$( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
-  eval $command
-}
+# fhistory() {
+#   command=$( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+#   eval $command
+# }
 
-zle -N fhistory  # _git_status関数をgit_status widgetとして登録
-bindkey '^r' fhistory
+# zle -N fhistory  # _git_status関数をgit_status widgetとして登録
+# bindkey '^r' fhistory
 fcat(){
     fzf --preview 'cat {}'
 }
@@ -79,13 +82,18 @@ export GOPATH=$HOME/workspace/go
 export GOROOT=$HOME/workspace/go
 export GOENV_ROOT="$HOME/.goenv"
 export PATH="$GOENV_ROOT/bin:$PATH"
+export PATH=${HOME}/.rbenv/bin:${PATH}
 eval "$(goenv init -)"
 eval "$(direnv hook zsh)"
+eval "$(rbenv init -)"
 # ここでローカルで用意したものとgcp系のコマンドにPATHを通す
-export PATH=$HOME/dotfiles/bin/:$HOME/dotfiles/google-cloud-sdk/bin/:$HOME/dotfiles/google-cloud-sdk/platform/google_appengine/:$PATH
+export PATH=$HOME/dotfiles/bin:$HOME/dotfiles/google-cloud-sdk/bin/:$HOME/dotfiles/google-cloud-sdk/platform/google_appengine:$PATH
 export PATH=$PYENV_ROOT/bin:$PATH:$HOME/.nodebrew/current/bin:usr/local/sbin:/usr/local/bin:/usr/local:/usr/sbin:/sbin:$GOPATH/bin:$HOME/dotfiles/FlameGraph:
 export TERM='xterm-256color'
 export GOOGLE_APPLICATION_CREDENTIALS=$HOME/credentials/gcp/analyze-residential/analyze-residential-62968daf039a.json
+export KUBECONFIG=$HOME/.kube/config
 
-
+eval "$(pyenv init -)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export JAVA_HOME=`/usr/libexec/java_home -v 12`

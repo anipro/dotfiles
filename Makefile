@@ -5,7 +5,8 @@ MYSQL_SLOW_LOG='/var/log/mysql/'
 MYSQL_ERROR_LOG="/var/log/mysql/mysql_error_log"
 PLATFORM='Darwin'
 
-tunnel-ssh-single: #sshでgcpに接続
+tunnel-: #sshでgcpに接続
+	ssh -N -L 3307:my-rds-db.us-east-1.rds.amazonaws.com:3306 ec2-my-bastion-server.compute-1.amazonaws.com
 	ssh -i ~/.ssh/gcp_working -N yuki.matsuyama0123@35.200.60.220 -L 19999:35.200.60.220:22
 
 link: #zhsrcなどのdotfileのシンボリックリンクを張るすでにあるファイルはタイムスタンプで避難させる
